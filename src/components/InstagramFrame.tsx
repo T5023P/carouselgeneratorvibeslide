@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal } from "lucide-react";
+import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { type Palette } from "@/lib/colors";
 import { useState, useRef, useEffect } from "react";
@@ -24,8 +24,20 @@ export function InstagramFrame({ children, totalSlides, palette }: InstagramFram
     }
   };
 
+  const scrollPrev = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -scrollRef.current.clientWidth, behavior: "smooth" });
+    }
+  };
+
+  const scrollNext = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: scrollRef.current.clientWidth, behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="w-full max-w-[420px] rounded-3xl border border-zinc-800 bg-black overflow-hidden shadow-2xl relative mx-auto font-sans">
+    <div className="w-full max-w-[420px] rounded-3xl border border-zinc-800 bg-black overflow-hidden shadow-2xl relative mx-auto font-sans group">
       {/* IG Header */}
       <div className="flex items-center justify-between p-4 border-b border-zinc-800/50">
         <div className="flex items-center gap-3">
@@ -39,13 +51,34 @@ export function InstagramFrame({ children, totalSlides, palette }: InstagramFram
       </div>
 
       {/* Viewport - 4:5 Aspect Ratio Container */}
-      <div 
-        ref={scrollRef}
-        onScroll={handleScroll}
-        className="flex aspect-[4/5] w-full overflow-x-auto snap-x snap-mandatory hide-scrollbar"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {children}
+      <div className="relative">
+        <div 
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex aspect-[4/5] w-full overflow-x-auto snap-x snap-mandatory hide-scrollbar"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {children}
+        </div>
+
+        {/* Desktop Navigation Chevrons (visible on hover) */}
+        {currentSlide > 0 && (
+          <button 
+            onClick={scrollPrev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+        )}
+        
+        {currentSlide < totalSlides - 1 && (
+          <button 
+            onClick={scrollNext}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        )}
       </div>
 
       {/* IG Footer Actions */}
