@@ -2,9 +2,7 @@ import { NextResponse } from "next/server";
 import { tavily } from "@tavily/core";
 import Groq from "groq-sdk";
 
-// Initialize clients. They will throw an error if API keys are missing.
-const tvly = tavily({ apiKey: process.env.TAVILY_API_KEY });
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+// Clients will be instantiated inside the POST handler to avoid build-time errors
 
 // System prompt helper based on category
 function getSystemPrompt(category: string) {
@@ -33,6 +31,13 @@ JSON Schema per slide:
 
 export async function POST(req: Request) {
   try {
+    if (!process.env.TAVILY_API_KEY || !process.env.GROQ_API_KEY) {
+      return NextResponse.json({ error: "Missing API keys in environment variables." }, { status: 500 });
+    }
+
+    const tvly = tavily({ apiKey: process.env.TAVILY_API_KEY });
+    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
     const body = await req.json();
     const { topic, category } = body;
 
