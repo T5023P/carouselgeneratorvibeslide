@@ -2,14 +2,25 @@
 
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight, Zap, Shield, TrendingUp, Globe } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   const categories = [
-    { name: "Tech/SaaS", icon: Zap, vibe: "Bento Premium" },
-    { name: "Health/Wellness", icon: Shield, vibe: "Organic Minimal" },
-    { name: "Finance/Biz", icon: TrendingUp, vibe: "Bold Authority" },
-    { name: "News/Viral", icon: Globe, vibe: "Neo-Brutalist" },
+    { name: "Tech/SaaS", id: "tech", icon: Zap, vibe: "Bento Premium" },
+    { name: "Health/Wellness", id: "health", icon: Shield, vibe: "Organic Minimal" },
+    { name: "Finance/Biz", id: "finance", icon: TrendingUp, vibe: "Bold Authority" },
+    { name: "News/Viral", id: "news", icon: Globe, vibe: "Neo-Brutalist" },
   ];
+
+  const handleGetStarted = (categoryId?: string) => {
+    if (categoryId) {
+      router.push(`/generate?category=${categoryId}`);
+    } else {
+      router.push("/generate");
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-4 py-20">
@@ -37,7 +48,10 @@ export default function Home() {
         </p>
 
         <div className="flex flex-wrap justify-center gap-4">
-          <button className="flex items-center gap-2 rounded-full bg-accent px-8 py-4 font-semibold text-black transition-transform hover:scale-105 active:scale-95">
+          <button 
+            onClick={() => handleGetStarted()}
+            className="flex items-center gap-2 rounded-full bg-accent px-8 py-4 font-semibold text-black transition-transform hover:scale-105 active:scale-95"
+          >
             Get Started
             <ArrowRight className="h-5 w-5" />
           </button>
@@ -51,11 +65,12 @@ export default function Home() {
       <div className="mt-32 grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {categories.map((cat, i) => (
           <motion.div
-            key={cat.name}
+            key={cat.id}
+            onClick={() => handleGetStarted(cat.id)}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
-            className="glass group flex flex-col items-start gap-4 rounded-3xl p-6 transition-all hover:border-accent/40"
+            className="glass group flex cursor-pointer flex-col items-start gap-4 rounded-3xl p-6 transition-all hover:border-accent/40"
           >
             <div className="rounded-2xl bg-accent/10 p-3 text-accent group-hover:bg-accent group-hover:text-black transition-colors">
               <cat.icon className="h-6 w-6" />
