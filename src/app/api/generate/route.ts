@@ -19,11 +19,22 @@ Follow the Narrative Arc strictly for each slide index:
 - Slide 6 (How-to): Numbered steps (01, 02, 03). layoutType: "how-to"
 - Slide 7 (CTA): Logo + Button + Tagline. No swipe arrow. layoutType: "cta"
 
-JSON Schema per slide:
+JSON Schema:
+You must return a JSON object with a single key "slides", which is an array of exactly 7 objects.
 {
-  "title": "String. A punchy, compelling headline (max 6 words).",
-  "bodyText": "String. The main content (max 25 words). Keep it high-impact.",
-  "layoutType": "String. MUST be exactly the layoutType defined for that specific slide index in the narrative arc above."
+  "slides": [
+    {
+      "title": "String. A punchy, compelling headline (max 6 words).",
+      "bodyText": "String. The main content (max 25 words). Keep it high-impact.",
+      "layoutType": "hero"
+    },
+    // ... exactly 5 more slides mapping to the exact narrative arc ...
+    {
+      "title": "String. Call to action.",
+      "bodyText": "String. CTA text.",
+      "layoutType": "cta"
+    }
+  ]
 }`;
 
   const toneGuidelines: Record<string, string> = {
