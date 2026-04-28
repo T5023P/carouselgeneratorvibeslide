@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, ArrowLeft, Wand2 } from "lucide-react";
+import { Loader2, ArrowLeft, Wand2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { SlidePreview } from "@/components/SlidePreview";
 import { type ThemeVibe } from "@/lib/ThemeDictionary";
