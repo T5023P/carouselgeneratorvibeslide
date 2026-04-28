@@ -10,11 +10,20 @@ function getSystemPrompt(category: string) {
 Your task is to transform raw research data into a highly engaging, high-end 7-slide carousel designed for LinkedIn and Instagram.
 You MUST output a valid JSON object containing an array named "slides" with EXACTLY 7 objects.
 
+Follow the Narrative Arc strictly for each slide index:
+- Slide 1 (Hero): Aggressive hook + logo lockup. layoutType: "hero"
+- Slide 2 (Problem): Pain point using 'Strikethrough pills'. layoutType: "problem"
+- Slide 3 (Solution): Gradient background + 'Prompt box'. layoutType: "solution"
+- Slide 4 (Features): Feature list with Lucide icons. layoutType: "features"
+- Slide 5 (Details): Deep dive/Specs. layoutType: "details"
+- Slide 6 (How-to): Numbered steps (01, 02, 03). layoutType: "how-to"
+- Slide 7 (CTA): Logo + Button + Tagline. No swipe arrow. layoutType: "cta"
+
 JSON Schema per slide:
 {
-  "title": "String. A punchy, compelling headline for the slide (max 6 words).",
-  "bodyText": "String. The main content of the slide (max 25 words). Keep it high-impact and concise.",
-  "layoutType": "String. Must be one of: 'hero', 'split', 'bento-3-grid', 'quote', 'stat-focus'"
+  "title": "String. A punchy, compelling headline (max 6 words).",
+  "bodyText": "String. The main content (max 25 words). Keep it high-impact.",
+  "layoutType": "String. MUST be exactly the layoutType defined for that specific slide index in the narrative arc above."
 }`;
 
   const toneGuidelines: Record<string, string> = {

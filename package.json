@@ -12,6 +12,7 @@
     "@supabase/supabase-js": "^2.105.1",
     "@tavily/core": "^0.7.2",
     "@vercel/og": "^0.11.1",
+    "chroma-js": "^3.2.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
     "groq-sdk": "^1.1.2",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/chroma-js": "^3.1.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -5,8 +5,9 @@ import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, ArrowLeft, Wand2, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { InstagramFrame } from "@/components/InstagramFrame";
 import { SlidePreview } from "@/components/SlidePreview";
-import { type ThemeVibe } from "@/lib/ThemeDictionary";
+import { generatePalette } from "@/lib/colors";
 
 const categories = [
   { id: "tech", label: "Tech/SaaS" },
@@ -21,9 +22,12 @@ function GenerateContent() {
 
   const [category, setCategory] = useState<string>(initialCategory);
   const [topic, setTopic] = useState("");
+  const [primaryColor, setPrimaryColor] = useState("#b3ff00");
   const [isLoading, setIsLoading] = useState(false);
   const [slides, setSlides] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  const palette = generatePalette(primaryColor);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,6 +95,25 @@ function GenerateContent() {
                     {c.label}
                   </button>
                 ))}
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="colorPicker" className="mb-2 block text-sm font-medium text-zinc-300">
+                Primary Brand Color
+              </label>
+              <div className="flex items-center gap-4">
+                <input
+                  type="color"
+                  id="colorPicker"
+                  value={primaryColor}
+                  onChange={(e) => setPrimaryColor(e.target.value)}
+                  className="h-12 w-24 cursor-pointer rounded-xl border border-zinc-800 bg-zinc-900/50 p-1"
+                />
+                <div className="text-sm text-zinc-400">
+                  <span className="font-mono">{primaryColor.toUpperCase()}</span>
+                  <p className="text-xs opacity-70 mt-1">Our agent will automatically derive a 5-color palette from this hex.</p>
+                </div>
               </div>
             </div>
 
@@ -174,22 +197,23 @@ function GenerateContent() {
             {!isLoading && slides.length > 0 && (
               <motion.div
                 key="results"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="w-full flex overflow-x-auto pb-8 gap-6 snap-x snap-mandatory"
-                style={{ scrollbarWidth: 'thin' }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="w-full"
               >
-                {slides.map((slide, idx) => (
-                  <div key={idx} className="shrink-0 snap-center">
+                <InstagramFrame totalSlides={slides.length} palette={palette}>
+                  {slides.map((slide, idx) => (
                     <SlidePreview
-                      theme={category as ThemeVibe}
+                      key={idx}
+                      layoutType={slide.layoutType}
                       title={slide.title}
                       content={slide.bodyText}
                       stepNumber={idx + 1}
                       totalSteps={slides.length}
+                      palette={palette}
                     />
-                  </div>
-                ))}
+                  ))}
+                </InstagramFrame>
               </motion.div>
             )}
           </AnimatePresence>
